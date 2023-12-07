@@ -11,9 +11,13 @@ class Game:
         self.game_id = self.get_id()
         self.possible_game = True
 
+        self.power = 1
         for color in colors:
-            if self.get_max(color) > totals[color]:
+            max = self.get_max(color)
+            self.power *= max
+            if max > totals[color]:
                 self.possible_game = False
+            
         
     def get_id(self):
         """
@@ -42,6 +46,9 @@ class Game:
     
     def return_possible_game(self):
         return self.possible_game
+    
+    def return_power(self):
+        return self.power
 
 cube_sets = []
 # open file and add each line to calibrations_strings
@@ -51,5 +58,6 @@ with open('input.txt') as input:
 
 games = [ Game(cube_set) for cube_set in cube_sets ]
 possible_ids = [ game.return_id() for game in games if game.return_possible_game()]
-
+powers = [game.return_power() for game in games]
 print(sum(possible_ids))
+print(sum(powers))
